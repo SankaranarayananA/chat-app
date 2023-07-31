@@ -14,7 +14,7 @@ const buttonVariants = cva(
 );
 
 const Button: FC<ButtonProps> = ({}) => {
-  return <div>Button</div>;
+  return (<div>Button</div>);
 };
 
 export default Button;
