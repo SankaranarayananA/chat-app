@@ -1,6 +1,6 @@
+import Button from "@/components/ui/Button";
 import { db } from "@/lib/db";
 
 export default async function Home() {
-  await db.set("test", "test");
-  return <div className="text-red-500">Hello World </div>;
+  return <Button variant="ghost">Hello</Button>;
 }
