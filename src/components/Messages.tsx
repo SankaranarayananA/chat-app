@@ -1,0 +1,25 @@
+"use client";
+import { FC, useRef } from "react";
+import { Message } from "@/lib/validations/message";
+
+interface MessagesProps {
+  initialMessages: Message[];
+  sessionId: string;
+  chatId: string;
+  sessionImg: string | null | undefined;
+  chatPartner: User;
+}
+
+const Messages: FC<MessagesProps> = ({}) => {
+  const scrollDownRef = useRef<HTMLDivElement | null>(null);
+  return (
+    <div
+      id="messages"
+      className="flex h-full flex-1 flex-col-reverse gap-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch"
+    >
+      <div ref={scrollDownRef} />
+    </div>
+  );
+};
+
+export default Messages;
