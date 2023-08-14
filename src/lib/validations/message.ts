@@ -3,7 +3,7 @@ import {z} from 'zod';
 export const messageValidator = z.object({
     id:z.string(),
     text:z.string(),
-    senderId:z.string(),
+    senderId:z.string().max(2000),
     timestamp:z.number(),
 })
 
