@@ -1,10 +1,11 @@
 "use client";
+
 import { pusherClient } from "@/lib/pusher";
 import { toPusherKey } from "@/lib/utils";
 import axios from "axios";
 import { Check, UserPlus, X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { FC, use, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 interface FriendRequestsProps {
   incomingFriendRequests: IncomingFriendRequest[];
@@ -12,8 +13,8 @@ interface FriendRequestsProps {
 }
 
 const FriendRequests: FC<FriendRequestsProps> = ({
-  sessionId,
   incomingFriendRequests,
+  sessionId,
 }) => {
   const router = useRouter();
   const [friendRequests, setFriendRequests] = useState<IncomingFriendRequest[]>(
@@ -25,7 +26,12 @@ const FriendRequests: FC<FriendRequestsProps> = ({
       toPusherKey(`user:${sessionId}:incoming_friend_requests`)
     );
 
-    const friendRequestHandler = (data: IncomingFriendRequest) => {};
+    const friendRequestHandler = ({
+      senderId,
+      senderEmail,
+    }: IncomingFriendRequest) => {
+      setFriendRequests((prev) => [...prev, { senderId, senderEmail }]);
+    };
 
     pusherClient.bind("incoming_friend_requests", friendRequestHandler);
 
@@ -33,17 +39,17 @@ const FriendRequests: FC<FriendRequestsProps> = ({
       pusherClient.unsubscribe(
         toPusherKey(`user:${sessionId}:incoming_friend_requests`)
       );
-
       pusherClient.unbind("incoming_friend_requests", friendRequestHandler);
     };
-  }, []);
+  }, [sessionId]);
 
   const acceptFriend = async (senderId: string) => {
     await axios.post("/api/friends/accept", { id: senderId });
 
     setFriendRequests((prev) =>
-      prev.filter((request) => request.senderId != senderId)
+      prev.filter((request) => request.senderId !== senderId)
     );
+
     router.refresh();
   };
 
@@ -51,14 +57,15 @@ const FriendRequests: FC<FriendRequestsProps> = ({
     await axios.post("/api/friends/deny", { id: senderId });
 
     setFriendRequests((prev) =>
-      prev.filter((request) => request.senderId != senderId)
+      prev.filter((request) => request.senderId !== senderId)
     );
+
     router.refresh();
   };
 
   return (
     <>
-      {friendRequests.length == 0 ? (
+      {friendRequests.length === 0 ? (
         <p className="text-sm text-zinc-500">Nothing to show here...</p>
       ) : (
         friendRequests.map((request) => (
@@ -72,6 +79,7 @@ const FriendRequests: FC<FriendRequestsProps> = ({
             >
               <Check className="font-semibold text-white w-3/4 h-3/4" />
             </button>
+
             <button
               onClick={() => denyFriend(request.senderId)}
               aria-label="deny friend"
