@@ -1,9 +1,11 @@
 "use client";
+
 import axios from "axios";
 import { FC, useRef, useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import TextareaAutosize from "react-textarea-autosize";
 import Button from "./ui/Button";
+
 interface ChatInputProps {
   chatPartner: User;
   chatId: string;
@@ -13,6 +15,7 @@ const ChatInput: FC<ChatInputProps> = ({ chatPartner, chatId }) => {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [input, setInput] = useState<string>("");
+
   const sendMessage = async () => {
     if (!input) return;
     setIsLoading(true);
@@ -27,6 +30,7 @@ const ChatInput: FC<ChatInputProps> = ({ chatPartner, chatId }) => {
       setIsLoading(false);
     }
   };
+
   return (
     <div className="border-t border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
       <div className="relative flex-1 overflow-hidden rounded-lg shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-indigo-600">

@@ -7,7 +7,6 @@ import { getServerSession } from "next-auth";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
-// The following generateMetadata functiion was written after the video and is purely optional
 export async function generateMetadata({
   params,
 }: {
@@ -96,12 +95,14 @@ const page = async ({ params }: PageProps) => {
 
           <div className="flex flex-col leading-tight">
             <div className="text-xl flex items-center">
-              <span className="text-gray-700 mr-3 font-semibold">
+              <span className="text-gray-700 mr-3 font-semibold dark:text-slate-50">
                 {chatPartner.name}
               </span>
             </div>
 
-            <span className="text-sm text-gray-600">{chatPartner.email}</span>
+            <span className="text-sm text-gray-600 dark:text-slate-50">
+              {chatPartner.email}
+            </span>
           </div>
         </div>
       </div>
